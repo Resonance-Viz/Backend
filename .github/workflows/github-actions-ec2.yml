@@ -19,18 +19,17 @@ jobs:
         echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
 
-    - name: Debug EC2 Public DNS
-      run: |
-        echo "EC2_PUBLIC_DNS: ${{ secrets.EC2_PUBLIC_DNS }}"
-        
     - name: Deploy to EC2
       env:
         EC2_PUBLIC_DNS: ${{ secrets.EC2_PUBLIC_DNS }}
       run: |
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@${{ env.EC2_PUBLIC_DNS }} << 'EOF'
+        if [ -d "my-flask-app" ]; then
           cd my-flask-app
           git pull origin main
           docker-compose down
           docker-compose build
           docker-compose up -d
+        else 
+          echo "Directory DNI"
         EOF
