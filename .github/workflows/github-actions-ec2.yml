@@ -25,16 +25,16 @@ jobs:
         DIRECTORY: "flask-server"
       run: |
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@${{ env.EC2_PUBLIC_DNS }} << 'EOF'
-        if [ -d "${{env.DIRECTORY}}" ]; then
-          echo "Directory exists"
-          cd "${{env.DIRECTORY}}"
-          git pull origin main
-          docker-compose down
-          docker-compose build
-          docker-compose up -d
-        else 
-          echo "Directory DNI"
-          mkdir -p "${{env.DIRECTORY}}"
-          git clone -b main https://github.com/Resonance-Viz/Backend "${{env.DIRECTORY}}"
-        fi
+          if [ -d "${{ env.DIRECTORY }}" ]; then
+            echo "Directory exists"
+            cd "${{ env.DIRECTORY }}"
+            git pull origin main
+          else 
+            echo "Directory DNI"
+            mkdir -p "${{ env.DIRECTORY }}"
+            git clone -b main https://github.com/Resonance-Viz/Backend "${{ env.DIRECTORY }}"
+            cd "${{ env.DIRECTORY }}"
+          fi
+          docker build -t flask-server .
+          docker run -d -p 5000:5000 flask-server
         EOF
