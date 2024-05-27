@@ -35,6 +35,7 @@ jobs:
             git clone -b main https://github.com/Resonance-Viz/Backend "${{ env.DIRECTORY }}"
             cd "${{ env.DIRECTORY }}"
           fi
-          docker build -t flask-server .
-          docker run -d -p 5000:5000 flask-server
+          docker-compose down
+          docker-compose build
+          docker-compose up -d
         EOF
