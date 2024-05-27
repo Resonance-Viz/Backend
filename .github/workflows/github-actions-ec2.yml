@@ -35,7 +35,7 @@ jobs:
             git clone -b main https://github.com/Resonance-Viz/Backend "${{ env.DIRECTORY }}"
             cd "${{ env.DIRECTORY }}"
           fi
-          docker-compose down
-          docker-compose build
-          docker-compose up -d
+          docker compose down
+          docker compose build
+          docker compose up -d
         EOF
