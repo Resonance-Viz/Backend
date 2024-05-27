@@ -14,8 +14,6 @@ if __name__ == '__main__':
     ec2_ip = get_ec2_public_ip()
     
     if ec2_ip:
-        ip = int(ec2_ip)
-        app.run(host='0.0.0.0', port=ip)  
+        app.run(host='0.0.0.0', port=5000)  
     else:
-        raise Exception("ec2 ip was not found in environment variables")
-
+        raise Exception("EC2 IP was not found in environment variables")
