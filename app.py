@@ -1,12 +1,16 @@
 from flask import Flask
 from flask_cors import CORS
 
+import logging
+
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
 from bson.json_util import dumps
 
 import os 
+
+logging.basicConfig(filename='app.log', level=logging.DEBUG)
 
 mongo_uri = os.environ.get('MONGO_URI')
 
@@ -20,6 +24,7 @@ def create_app():
             client.admin.command('ping')
             print("Pinged your deployment. You successfully connected to MongoDB!")
         except Exception as e:
+            logging.error(e)
             print(e)   
     
     @app.route('/')
