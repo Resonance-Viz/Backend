@@ -27,16 +27,16 @@ def create_app():
             logging.error(e)
             print(e)   
     
-    @app.route('/')
-    def hello_world():
-        return 'Hello from EC2 instance!'
+        @app.route('/')
+        def hello_world():
+            return 'Hello from EC2 instance!'
 
-    @app.route('/formatted-data')
-    def get_data():
-        # Create a new client and connect to the server
-        collection = client['mock_ww_data']['character_usage']
+        @app.route('/formatted-data')
+        def get_data():
+            # Create a new client and connect to the server
+            collection = client['mock_ww_data']['character_usage']
 
-        return dumps(collection.find())
+            return dumps(collection.find())
      
     return app
 
