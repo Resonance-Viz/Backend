@@ -26,7 +26,6 @@ jobs:
         MONGO_URI: ${{ secrets.MONGO_URI }}
       run: |
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@${{ env.EC2_PUBLIC_DNS }} << 'EOF'
-          export MONGO_URI="${{ env.MONGO_URI }}"
           if [ -d "${{ env.DIRECTORY }}" ]; then
             echo "Directory exists"
             cd "${{ env.DIRECTORY }}"
@@ -40,5 +39,5 @@ jobs:
           docker stop $(docker ps -q --filter ancestor=flask-server) || true
           docker rm $(docker ps -a -q --filter ancestor=flask-server) || true
           docker build -t flask-server .
-          docker run -d -p 5000:5000 flask-server
+          docker run -d -p 5000:5000 --env MONGO_URI="${{ env.MONGO_URI }}" flask-server
         EOF
