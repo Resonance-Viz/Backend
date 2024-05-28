@@ -13,25 +13,27 @@ mongo_uri = os.environ.get('MONGO_URI')
 app = Flask(__name__)
 CORS(app)
 
+# TODO: need to set up a create_app method which initalizes the db once on startup. this is better than initializing
+# each time the /formatted-data route is navigated to
+
 @app.route('/')
 def hello_world():
     return 'Hello from EC2 instance!'
 
 @app.route('/formatted-data')
 def get_data():
-    return 'hi'
-    # # Create a new client and connect to the server
-    # client = MongoClient(mongo_uri, server_api=ServerApi('1'))
+    # Create a new client and connect to the server
+    client = MongoClient(mongo_uri, server_api=ServerApi('1'))
     
-    # try:
-    #     client.admin.command('ping')
-    #     print("Pinged your deployment. You successfully connected to MongoDB!")
-    # except Exception as e:
-    #     print(e)
+    try:
+        client.admin.command('ping')
+        print("Pinged your deployment. You successfully connected to MongoDB!")
+    except Exception as e:
+        print(e)
     
-    # collection = client['mock_ww_data']['character_usage']
+    collection = client['mock_ww_data']['character_usage']
 
-    # return dumps(collection.find())
+    return dumps(collection.find())
     
 
 if __name__ == '__main__':
